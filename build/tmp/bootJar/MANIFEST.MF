@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Start-Class: com.hero.HeroesService
+Main-Class: org.springframework.boot.loader.JarLauncher
+
