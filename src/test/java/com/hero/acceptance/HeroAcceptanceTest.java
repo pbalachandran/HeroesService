@@ -9,8 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.hero.util.TestUtils.readFixture;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,20 +27,16 @@ public class HeroAcceptanceTest {
     @Test
     public void getHeroes_returnsHeroViewModels() throws Exception {
         mockMvc.perform(get("/api/heroes")
-                .accept(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(11)))
-                .andExpect(jsonPath("$[0].name", is("Mr. Nice")))
-                .andExpect(jsonPath("$[9].id", is(20)))
-                .andExpect(jsonPath("$[9].name", is("Tornado")));
+                .andExpect(content().json(readFixture("responses/heroes.json")));
     }
 
     @Test
     public void getHero_whenGivenAnId_returnsHeroViewModel() throws Exception {
         mockMvc.perform(get("/api/hero/11")
-                .accept(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(11)))
-                .andExpect(jsonPath("$.name", is("Mr. Nice")));
+                .andExpect(content().json(readFixture("responses/hero.json")));
     }
 }
